@@ -82,4 +82,14 @@ datasets summary gene taxon 203993 --as-json-lines | dataformat tsv gene --field
 
 - NCBI datasets and dataformat [documentation](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/getting_started/)
 
+
+### Bash Command to Extract Gene 2 Go term mapping from NCBI
+
+```bash
+wget ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2go.gz
+
+# optional filtering for specific taxonomy (faster than in R)
+awk -F'\t' '$3 == "gene" {match($9, /gene-LOC[0-9]+/); if (RSTART) print substr($9, RSTART, RLENGTH)}' /home/colinl/Proj/microbiome_probiotics_RNASeq/Pver_ref/download/ncbi_dataset/data/GCF_036669915.1/genomic.simple.gtf| sed 's/gene-LOC//' | sort | uniq | zgrep -Fwf - gene2go.gz >> gene2go.filtered 
+```
+
 </details>
