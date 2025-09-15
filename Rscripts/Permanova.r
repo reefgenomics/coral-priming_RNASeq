@@ -182,7 +182,9 @@ for (i in tpair) {
 
 ### run pairwise adonis2 for without blocks ###
 out_dir <- "/home/colinl/Proj/microbiome_probiotics_RNASeq/results/deseq2_R/permanova_results_no_blocks/joined-matrix/"
-## loop though each treatment pair and timepoint
+if (!dir.exists(out_dir)) {
+    dir.create(out_dir, recursive = TRUE)
+}## loop though each treatment pair and timepoint
 tpair <- combn(levels(metadata$treatment), 2, simplify = FALSE)
 for (i in tpair) {
     meta_tpair <- metadata[metadata$treatment %in% i, ]
@@ -200,7 +202,7 @@ for (i in tpair) {
         perm_control <- with(meta_tp, how(
         # within = Within(type = "series"), # preserves order of timepoints sequence
         # plots  = Plots(strata = colony),    # treats each colony as a ‘plot’ of repeated measures
-        blocks = colony,                    # no swaps between different colonies
+        # blocks = colony,                    # no swaps between different colonies
         nperm  = 999999
         ))
 
@@ -320,3 +322,5 @@ for (i in c(2:length(object_list_cut))) {
     capture.output(print(result), file = out_file, append = TRUE)
     cat("\n", file = out_file, append = TRUE)
 }
+
+# End of script
