@@ -16,8 +16,10 @@ p_load(clusterProfiler,
       topGO,
       DESeq2)
 
+# set WD directory variable
+base_dir <- "/path/to/project/"
 # # set output directory variable
-out_dir <- "/home/colinl/Proj/microbiome_probiotics_RNASeq/results/deseq2_R/GO_enrichment"
+out_dir <- paste0(base_dir, "results/deseq2_R/GO_enrichment")
 # Create output directory if it doesn't exist
 if (!dir.exists(out_dir)) {
         dir.create(paste(out_dir,"plot", "cnetplot",  sep = "/"), recursive = TRUE)
@@ -25,7 +27,7 @@ if (!dir.exists(out_dir)) {
         dir.create(paste(out_dir,"summary","fisher", sep = "/"), recursive = TRUE)
 }
 
-gff_file <- "/home/colinl/Proj/microbiome_probiotics_RNASeq/Pver_ref/genomic.simple.gtf.gz"
+gff_file <- paste0(base_dir, "Pver_ref/genomic.simple.gtf.gz")
 
 txdb <- makeTxDbFromGFF(gff_file, format = "gtf")
 gene_map <- GenomicFeatures::genes(txdb)
@@ -38,7 +40,7 @@ gene_map$GENENAME <- sub("gene-", "", gene_map$GENENAME)
 gene_map$gene_id <- sub("gene-", "", gene_map$gene_id)
 
 # load the dds objects
-object_list <- list.files(path = "/home/colinl/Proj/microbiome_probiotics_RNASeq/results/deseq2_R/dds_objects/", pattern = "*.rds", full.names = TRUE)
+object_list <- list.files(path = paste0(base_dir, "results/deseq2_R/dds_objects/"), pattern = "*.rds", full.names = TRUE)
 
 # httpgd::hgd()
 # Loop through each DESeq2 object and perform individual GO enrichment analysis
@@ -292,7 +294,7 @@ dotplot(tt, showCategory = 20, size = "FoldEnrichment") +
 dev.off()
 
 ###--- fisher test ---###
-gene2GO <- read_tsv("/home/colinl/Proj/microbiome_probiotics_RNASeq/Pver_ref/NCBIFilesDir/gene2go.gz")
+gene2GO <- read_tsv(paste0(base_dir, "Pver_ref/NCBIFilesDir/gene2go.gz"))
 # head(gene2GO)
 # Filter gene2GO for taxid = 203993
 gene2GO_filtered <- gene2GO %>% filter(`#tax_id` == 203993)

@@ -12,8 +12,11 @@ library(vegan)
 library(pairwiseAdonis)
 library(DESeq2)
 
+# set WD directory variable
+base_dir <- "/path/to/project/"
+
 # prepare metadata dataframe. Extracted form samplesheet.csv sample names in out case.
-samples <- read.csv("/home/colinl/Proj/microbiome_probiotics_RNASeq/samplesheet.csv", header = TRUE)
+samples <- read.csv(paste0(base_dir, "samplesheet.csv"), header = TRUE)
 samples <- samples$sample
 
 #make sample dataframe with colnames from counts
@@ -36,7 +39,7 @@ colnames(metadata)
 metadata <- metadata[, c("treatment", "timepoint", "colony")] # keep only relevant columns
 
 # Create DESeq2 object and run variance stabilizing transformation
-object_list <- list.files(path = "/home/colinl/Proj/microbiome_probiotics_RNASeq/results/deseq2_R/dds_objects/", pattern = "*.rds", full.names = TRUE)
+object_list <- list.files(path = paste0(base_dir, "results/deseq2_R/dds_objects/"), pattern = "*.rds", full.names = TRUE)
 object_list <- object_list[order(nchar(object_list))] # sort by length of file name to clean up multi output text file later
 
 # Load the first DESeq2 object to get the matrix
@@ -80,7 +83,7 @@ results_pairwise <- pairwise.adonis2(
 # explore with e.g.: "results_pairwise$VD_vs_VL"
 
 # Save the results to a file
-out_dir <- "/home/colinl/Proj/microbiome_probiotics_RNASeq/results/deseq2_R/permanova_results/joined-matrix/"
+out_dir <- paste0(base_dir, "results/deseq2_R/permanova_results/joined-matrix/")
 if (!dir.exists(out_dir)) {
     dir.create(out_dir, recursive = TRUE)
 }
@@ -181,7 +184,7 @@ for (i in tpair) {
 
 
 ### run pairwise adonis2 for without blocks ###
-out_dir <- "/home/colinl/Proj/microbiome_probiotics_RNASeq/results/deseq2_R/permanova_results_no_blocks/joined-matrix/"
+out_dir <- paste0(base_dir, "results/deseq2_R/permanova_results_no_blocks/joined-matrix/")
 if (!dir.exists(out_dir)) {
     dir.create(out_dir, recursive = TRUE)
 }## loop though each treatment pair and timepoint
@@ -273,9 +276,9 @@ for (i in tpair) {
 # Clean up object_list to remove objects with only one time point and 2 treatments.
 # This is a filter to exclude objects that would be blocked by strata in the adonis test. # activate if you want to filter out objects with low number of permutations. 
 # object_list_cut <- object_list[!grepl("[CV][CPDL]v[CV][CPDL]-T[012]\\.rds$", object_list)]
-object_list_cut <- object_list # keep all objects for now
+object_list_cut <- object_list # keep all objects for now
 
-out_dir <- "/home/colinl/Proj/microbiome_probiotics_RNASeq/results/deseq2_R/permanova_results/individual-matrix/"
+out_dir <- paste0(base_dir, "results/deseq2_R/permanova_results/individual-matrix/")
 if (!dir.exists(out_dir)) {
     dir.create(out_dir, recursive = TRUE)
 }

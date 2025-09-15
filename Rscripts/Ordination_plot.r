@@ -4,14 +4,16 @@
 library(pacman)
 p_load(phyloseq, microbiome, httpgd, ggrepel, ggplot2, ggpubr, dplyr, readr, DESeq2)
 
+# set WD directory variable
+base_dir <- "/path/to/project/"
 # # set output directory variable
-out_dir <- "/home/colinl/Proj/microbiome_probiotics_RNASeq/results/deseq2_R/Ordination_plot"
+out_dir <- paste0(base_dir, "results/deseq2_R/Ordination_plot")
 # Create output directory if it doesn't exist
 if (!dir.exists(out_dir)) {
         dir.create(paste(out_dir,"plot", "",  sep = "/"), recursive = TRUE)
 }
 # Load count data and preprocess
-cnt <- read.table("/home/colinl/Proj/microbiome_probiotics_RNASeq/results/star_salmon/salmon.merged.gene_counts.tsv", 
+cnt <- read.table(paste0(base_dir, "results/star_salmon/salmon.merged.gene_counts.tsv"), 
           header = TRUE, sep = "\t", row.names = 1)
 cnt <- cnt[, -1]  # Remove the first column (unnecessary)
 cnt <- round(cnt[, order(colnames(cnt))], digits = 0)  # Round counts and reorder columns alphabetically
@@ -21,7 +23,7 @@ cnt <- cnt %>% rename_all(~sub("X", "", .))  # Remove "X" prefix
 cnt <- cnt %>% rename_all(~sub("2024_Pver_", "", .))  # Remove "2024_Pver_" prefix # for cleaner names
 
 # Load and clean tx2gene mapping
-tx2gene <- read_tsv("/home/colinl/Proj/microbiome_probiotics_RNASeq/results/star_salmon/tx2gene.tsv")
+tx2gene <- read_tsv(paste0(base_dir, "results/star_salmon/tx2gene.tsv"))
 
 # Handle improperly formatted pseudogenes
 tx2gene <- tx2gene %>%
@@ -35,7 +37,7 @@ tx2gene$gene_id <- sub("gene-", "", tx2gene$gene_id)
 rownames(cnt) <- tx2gene$gene_id[match(rownames(cnt), tx2gene$gene_name)]
 
 # Load sample metadata
-samples <- read.csv("/home/colinl/Proj/microbiome_probiotics_RNASeq/samplesheet.csv", header = TRUE)
+samples <- read.csv(paste0(base_dir, "samplesheet.csv"), header = TRUE)
 samples <- samples$sample
 
 # Create metadata dataframe
@@ -151,7 +153,7 @@ dev.off()  # Close the PDF device
 
 ### --- New section for PCA plot --- ###
 # load the dds objects
-object_list <- list.files(path = "/home/colinl/Proj/microbiome_probiotics_RNASeq/results/deseq2_R/dds_objects/", pattern = "*.rds", full.names = TRUE)
+object_list <- list.files(path = paste0(base_dir, "results/deseq2_R/dds_objects/"), pattern = "*.rds", full.names = TRUE)
 
 # httpgd::hgd()
 # Loop through each DESeq2 object and perform PCA analysis

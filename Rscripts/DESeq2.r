@@ -11,8 +11,10 @@ p_load(readr,
         tximport,
         apeglm)
 
+# set WD directory variable
+base_dir <- "/path/to/project/"
 # set output directory variable
-out_dir <- "/home/colinl/Proj/microbiome_probiotics_RNASeq/results/deseq2_R"
+out_dir <- paste0(base_dir, "results/deseq2_R")
 # Create output directory if it doesn't exist
 if (!dir.exists(out_dir)) {
         dir.create(paste(out_dir,"dds_objects", sep = "/"), recursive = TRUE)
@@ -21,14 +23,14 @@ if (!dir.exists(out_dir)) {
 }
 
 # Preparing count data from nf-core/rnaseq pipeline star_salmon output.
-counts <- read.table("/home/colinl/Proj/microbiome_probiotics_RNASeq/results/star_salmon/salmon.merged.gene_counts.tsv", header = TRUE, sep = "\t", row.names = 1)
+counts <- read.table(paste0(base_dir, "results/star_salmon/salmon.merged.gene_counts.tsv"), header = TRUE, sep = "\t", row.names = 1)
 counts <- counts[, -1]
 counts <- round(counts[, order(colnames(counts))], digits = 0)
 # fix colnames names removing the X before the 2024. #sample set specific
 counts <- counts %>% rename_all( ~ sub("X", "", .))
 
 # used to be sure gene names are consitent between annotation and counts
-tx2gene <- read_tsv("/home/colinl/Proj/microbiome_probiotics_RNASeq/results/star_salmon/tx2gene.tsv")
+tx2gene <- read_tsv(paste0(base_dir, "results/star_salmon/tx2gene.tsv"))
 # clean up improper formatting of pseudogenes due to agat conversion
 # When the gene_id start with "agat-pseudogene-" invert gene_id and transcript_id columns. 
 tx2gene <- tx2gene %>%
@@ -40,10 +42,10 @@ tx2gene$gene_id <- sub("gene-", "", tx2gene$gene_id)
 rownames(counts) <- tx2gene$gene_id[match(rownames(counts), tx2gene$gene_name)]
 
 # Read in annotation data from NCBI 
-all_annotations <- read_tsv("/home/colinl/Proj/microbiome_probiotics_RNASeq/Pver_ref/NCBIFilesDir/203993.gene.tsv")
+all_annotations <- read_tsv(paste0(base_dir, "Pver_ref/NCBIFilesDir/203993.gene.tsv"))
 
 # prepare metadata dataframe. Extracted form samplesheet.csv sample names in out case.
-samples <- read.csv("/home/colinl/Proj/microbiome_probiotics_RNASeq/samplesheet.csv", header = TRUE)
+samples <- read.csv(paste0(base_dir, "samplesheet.csv"), header = TRUE)
 samples <- samples$sample
 
 #make sample dataframe with colnames from counts

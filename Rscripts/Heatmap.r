@@ -11,8 +11,10 @@ p_load(readr,
         apeglm,
         pheatmap)
 
+# set WD directory variable
+base_dir <- "/path/to/project/"
 # set output directory variable
-out_dir <- "/home/colinl/Proj/microbiome_probiotics_RNASeq/results/deseq2_R/heatmap"
+out_dir <- paste0(base_dir, "results/deseq2_R/heatmap")
 # Create output directory if it doesn't exist
 if (!dir.exists(out_dir)) {
         dir.create(paste(out_dir, "plot", sep = "/"), recursive = TRUE)
@@ -20,7 +22,7 @@ if (!dir.exists(out_dir)) {
 }
 
 # Preparing count data from nf-core/rnaseq pipeline star_salmon output.
-counts <- read.table("/home/colinl/Proj/microbiome_probiotics_RNASeq/results/star_salmon/salmon.merged.gene_counts.tsv", header = TRUE, sep = "\t", row.names = 1)
+counts <- read.table(paste0(base_dir, "results/star_salmon/salmon.merged.gene_counts.tsv"), header = TRUE, sep = "\t", row.names = 1)
 counts <- counts[, -1]
 counts <- round(counts[, order(colnames(counts))], digits = 0)
 # fix colnames names removing the X before the 2024. #sample set specific
@@ -34,7 +36,7 @@ filtered_expr <- expr_mat[rowSums(expr_mat) > 10, ]
 
 # Scale the rows of the matrix
 scaled_expr <- t(scale(t(filtered_expr)))
-# pdf("/home/colinl/Proj/microbiome_probiotics_RNASeq/heatmap_expressed_genes.pdf")
+# pdf(paste0(base_dir, "heatmap_expressed_genes.pdf"))
 
 # Save the heatmap to a PNG file
 png(paste0(out_dir,"/plot/heatmap_expressed_genes.png"), width = 2000, height = 1500, res = 300)
