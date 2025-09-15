@@ -320,21 +320,21 @@ for (i in seq_along(object_list)) {
   # names(geneList) <- universe
   names(geneList) <- sub("LOC", "", universe)
 
-  myGOdata <- new("topGOdata", 
-                  description = paste("Fisher Test for", comp_name), 
-                  ontology = "BP", 
-                  allGenes = geneList, 
-                  annot = annFUN.gene2GO, 
+  myGOdata <- new("topGOdata",
+                  description = paste("Fisher Test for", comp_name),
+                  ontology = "BP",
+                  allGenes = geneList,
+                  annot = annFUN.gene2GO,
                   gene2GO = geneID2GO)
-  
+
   resultFisher <- runTest(myGOdata, algorithm = "weight01", statistic = "fisher")
-  
-  fisher_results[[comp_name]] <- GenTable(myGOdata, 
-                                          weightFisher = resultFisher, 
-                                          orderBy = "weightFisher", 
-                                          ranksOf = "weightFisher", 
+
+  fisher_results[[comp_name]] <- GenTable(myGOdata,
+                                          weightFisher = resultFisher,
+                                          orderBy = "weightFisher",
+                                          ranksOf = "weightFisher",
                                           topNodes = 20)
-  
+
   fisher_results[[comp_name]]$adjusted.p <- p.adjust(fisher_results[[comp_name]]$weightFisher, method = "bonferroni", n = length(fisher_results[[comp_name]]$weightFisher))
   fisher_results[[comp_name]]$q.value <- p.adjust(fisher_results[[comp_name]]$weightFisher, method = "fdr", n = length(fisher_results[[comp_name]]$weightFisher))
 
