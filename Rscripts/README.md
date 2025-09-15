@@ -1,13 +1,19 @@
-# Differential Expression Analysis with DESeq2
+# R Scripts for Differential Expression Analysis
 
-## overview
+## Overview
 
-- Creating R environment for server. Optional: depends on work environment
+This directory contains R scripts for downstream analysis of the RNA-Seq data processed by the nf-core/rnaseq pipeline. The analysis focuses on differential expression between coral treatments (Control vs Coral Probiotics vs VD) across multiple timepoints (T0, T1, T2).
+
+## Environment Setup
+
+Create a conda environment with required R packages:
 
 ```bash
-  mamba create -n r_env_DESeq2 -c conda-forge -c bioconda r-base bioconductor-deseq2 r-ellipse r-ggplot2 r-dplyr r-tidyr \
-  r-data.table bioconductor-phyloseq r-patchwork r-ggrepel r-pacman bioconductor-summarizedexperiment bioconductor-tximport bioconductor-apeglm bioconductor-GenomicFeatures \
-  r-httpgd radian
+mamba create -n r_env_DESeq2 -c conda-forge -c bioconda \
+  r-base bioconductor-deseq2 r-ellipse r-ggplot2 r-dplyr r-tidyr \
+  r-data.table bioconductor-phyloseq r-patchwork r-ggrepel r-pacman \
+  bioconductor-summarizedexperiment bioconductor-tximport \
+  bioconductor-apeglm bioconductor-GenomicFeatures r-httpgd radian
 ```
 
 - Import the count data into R.
@@ -27,13 +33,13 @@
 
 - Interpret the results and visualize them using tools like ggplot2 or pheatmap.
 
-# R script logic
+## Script Descriptions
 
-- DESeq2.r: Main DESeq comparisons. Relies on nf-core/rnaseq, Output in [deseq2_R](results/README.md)
-- Ordination_plot.r: Main visualization. Relies on [DESeq2.r](Rscripts/DESeq2.r). Output in [deseq2_R/plot](results/README.md)
-- Heatmap.r: Main visualization. Relies on [nf-core/rnaseq](https://github.com/nf-core/rnaseq/). Output in [deseq2_R/plot](results/README.md)
-- spawning_GO_enrichment.R: enrichment analysis. Relies on [DESeq2.r](Rscripts/DESeq2.r).
-- Permanova.r: PERMANOVA analysis. Relies on [DESeq2.r](Rscripts/DESeq2.r). Output in [deseq2_R/permanova_results](results/README.md)
+- **DESeq2.r:** Main differential expression analysis comparing treatments and timepoints. Requires nf-core/rnaseq output. Results saved to `../results/deseq2_R/`
+- **Ordination_plot.r:** Creates PCA and ordination visualizations. Depends on DESeq2.r output. Plots saved to `../results/deseq2_R/Ordination_plot/`
+- **Heatmap.r:** Generates expression heatmaps for significant genes. Uses nf-core/rnaseq counts. Output in `../results/deseq2_R/heatmap/`
+- **GO_enrichment.r:** Performs Gene Ontology enrichment analysis on DEGs. Depends on DESeq2.r results. Output in `../results/deseq2_R/GO_enrichment/`
+- **Permanova.r:** Statistical analysis using PERMANOVA to test treatment effects. Uses DESeq2.r output. Results in `../results/deseq2_R/permanova_results/`
 
 ## References
 

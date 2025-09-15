@@ -1,14 +1,19 @@
 
-![Header Image](https://github.com/nf-core/rnaseq/raw/3.18.0/docs/images/nf-core-rnaseq_logo_light.png)
+# Pipeline Results
 
-# nf-core/rnaseq pipeline results
+## Overview
 
-This folder will contain the results of the nf-core/rnaseq pipeline and the output form the DEG analysis see: [DESeq2 README.md](Rscripts/README.md)
-****
+This directory contains all outputs from the microbiome probiotics RNA-Seq analysis pipeline, including both nf-core/rnaseq preprocessing results and downstream DESeq2 analysis outputs.
+
+## nf-core/rnaseq Pipeline Outputs
+
+The pipeline generates comprehensive quality control and quantification results:
 
 ## Directory Structure
 
-Expected output DESeq2 Rscripts:
+### DESeq2 Analysis Outputs (`deseq2_R/`)
+
+Results from R-based differential expression analysis:
 
 ```text
 deseq2_R
@@ -83,7 +88,9 @@ deseq2_R
     └── DESeq_timepoints_summary_info.txt
 ```
 
-Expected output rnaseq pipeline::
+### nf-core/rnaseq Main Outputs
+
+Primary preprocessing and quantification results:
 
 ```text
 ├── fastp
@@ -149,6 +156,29 @@ Expected output rnaseq pipeline::
     └── tx2gene.tsv
 ```
 
+## Key Result Files
+
+### For Downstream Analysis
+
+- **Gene Counts:** `salmon/salmon.merged.gene_counts.tsv` - Raw gene count matrix
+- **Gene TPM:** `salmon/salmon.merged.gene_tpm.tsv` - Normalized expression values  
+- **Sample QC:** `multiqc/multiqc_report.html` - Comprehensive quality report
+
+### DESeq2 Outputs
+
+- **DEG Lists:** `deseq2_R/summary/DEgenes/` - Differentially expressed genes per comparison
+- **Statistics:** `deseq2_R/summary/DEcounts/` - Summary statistics for each comparison
+- **Visualizations:** `deseq2_R/*/plot/` - PCA plots, heatmaps, and other figures
+- **GO Enrichment:** `deseq2_R/GO_enrichment/` - Functional enrichment results
+
+## Analysis Workflow
+
+1. **Quality Control:** Review `multiqc_report.html` for sample quality assessment
+2. **Expression Data:** Use gene counts from `salmon/` directory for DESeq2 analysis  
+3. **Differential Expression:** Run R scripts in `../Rscripts/` directory
+4. **Results:** Examine outputs in `deseq2_R/` subdirectories
+
 ## References
 
 - [nf-core/rnaseq documentation](https://nf-co.re/rnaseq)
+- [DESeq2 Analysis Guide](../Rscripts/README.md)
