@@ -53,7 +53,7 @@ metadata <- data.frame(
                         levels = c("CC", "CP", "VD", "VL")), # set levels
         timepoint = factor(sub(".*_T(\\d+)_.*", "T\\1", samples), # extract timepoint from sample name
                         levels = c("T0", "T1", "T2")), # set levels
-        colony = factor(sub(".*_T\\d+_(\\d+)_\\d+", "\\1", samples)) # extract colony from sample name
+        colony = factor(sub(".*_T\\d+_(\\d+)_\\d+", "\\1", samples)) # extract colony from sample name (first number after T0, T1, T2)
 )
 rownames(metadata) <- metadata$sample # set sample as rownames
 
