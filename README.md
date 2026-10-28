@@ -2,12 +2,20 @@
 
 ## Overview
 
-This project is an RNA-Seq analysis pipeline for **Pocillopora verrucosa**. The pipeline uses nf-core/rnaseq for preprocessing, quantification with Salmon, and DESeq2 for differential expression analysis.
+This repository contains the host RNA-Seq analysis pipeline for the study *Pathogen priming reveals host immune training and microbiome conditioning in corals* (Monti et al., 2026, *ISME Host Microbe*; [doi:10.1093/ismehm/aazag001](https://doi.org/10.1093/ismehm/aazag001)). The RNA-Seq analysis here addresses the host gene expression modulation, including the immune and cellular responses, linked to priming.
+
+The pipeline uses nf-core/rnaseq for preprocessing, quantification with Salmon, and DESeq2 for differential expression analysis.
+
+## Citation
+
+If you use this code or data, please cite:
+
+> Monti M, Garcias-Bonet N, García FC, Santoro EP, Aljuaid G, Schuster K, Antony CP, Casartelli M, Beenham L, Giorgi A, Colin L, Voolstra CR, Peixoto RS (2026). Pathogen priming reveals host immune training and microbiome conditioning in corals. *ISME Host Microbe* 1(1): aazag001. https://doi.org/10.1093/ismehm/aazag001
 
 **Experimental Design:**
 
 - **Species:** *Pocillopora verrucosa* coral
-- **Treatments:** Untouched control (CC), non-primed corals (CP), inactivated primed samples (VD) and active primed samples (VL) treatments  
+- **Treatments:** Untouched control (CC), non-primed corals (CP), corals primed with inactivated *V. coralliilyticus* (VD) and corals primed with live *V. coralliilyticus* (VL)  
 - **Timepoints:** T0 (baseline), T1, T2
 - **Replicates:** 4 biological replicates per condition
 - **Sequencing:** Paired-end RNA-Seq
@@ -151,6 +159,7 @@ Key outputs in `results/deseq2_R/`:
 
 ## References
 
+- [Monti et al. 2026, *ISME Host Microbe* (doi:10.1093/ismehm/aazag001)](https://doi.org/10.1093/ismehm/aazag001)
 - [nf-core/rnaseq pipeline](https://nf-co.re/rnaseq/3.18.0)
 - [DESeq2 Bioconductor package](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)
 - [Pocillopora verrucosa reference genome (GCF_036669915.1)](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_036669915.1/)
